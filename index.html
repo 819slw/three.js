@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>火星探索-全球首个基于区块链技术的沙盒MMOSLG游戏DAPP!</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+	<script src="js/jquery-1.11.min.js"></script>
+	<script src='js/jquery-starfield.js'></script>
+</head>
+
+<body>
+	<div id="container" style="">
+		<script src="js/three.js"></script>
+		<script src="js/Projector.js"></script>
+		<script src="js/SoftwareRenderer.js"></script>
+		<script>
+			var container;
+			var camera, scene, renderer;
+			var group;
+			var mouseX = 0,
+				mouseY = 0;
+
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+
+			var canvas = document.createElement("canvas");
+			canvas.id = 'canvas';
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			var context = canvas.getContext('2d');
+			init();
+			animate();
+
+			function init() {
+
+				container = document.getElementById('container');
+
+				camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 2000);
+				camera.position.z = 500;
+
+				scene = new THREE.Scene();
+
+				group = new THREE.Group();
+				scene.add(group);
+
+				// earth
+				var loader = new THREE.TextureLoader();
+				loader.load('./img/mars-base.jpg', function (texture) {
+					var geometry = new THREE.SphereBufferGeometry(200, 20, 20);
+					var material = new THREE.MeshLambertMaterial({
+						map: texture,
+						overdraw: 1
+					});
+					var mesh = new THREE.Mesh(geometry, material);
+					group.add(mesh);
+
+				});
+
+				context.fillRect(0, 0, canvas.width, canvas.height);
+
+
+				var texture = new THREE.CanvasTexture(canvas);
+
+				var geometry = new THREE.PlaneBufferGeometry(300, 300, 3, 3);
+				var material = new THREE.MeshBasicMaterial({
+					map: texture,
+					overdraw: 0.5
+				});
+
+				var mesh = new THREE.Mesh(geometry, material);
+				mesh.position.y = -250;
+				mesh.rotation.x = -Math.PI / 2;
+				group.add(mesh);
+
+				renderer = new THREE.WebGLRenderer({
+					alpha: true,
+					antialias: true
+				});
+				renderer.setSize(canvas.width, canvas.height);
+
+				container.appendChild(renderer.domElement);
+
+
+
+
+				// renderer.setClearColor('rgb(255,255,255)', 1.0);
+				// renderer.setClearColor(0xffffff, 1.0);
+				// renderer.setClearColor('#fff', 0.1);
+				// renderer.setClearColor('rgba(0,0,0,.1)', 1.0);
+				renderer.setClearColor(0xFFFFFF, 0.0);
+
+
+				document.addEventListener('mousemove', onDocumentMouseMove, false);
+
+				window.addEventListener('resize', onWindowResize, false);
+
+			}
+
+			function onWindowResize() {
+
+				windowHalfX = window.innerWidth / 2;
+				windowHalfY = window.innerHeight / 2;
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize(window.innerWidth, window.innerHeight);
+
+			}
+
+			function onDocumentMouseMove(event) {
+
+				mouseX = (event.clientX - windowHalfX);
+				mouseY = (event.clientY - windowHalfY);
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame(animate);
+
+				render();
+
+			}
+
+			function render() {
+				camera.position.x += (mouseX - camera.position.x) * 0.05;
+				camera.position.y += (-mouseY - camera.position.y) * 0.05;
+				camera.lookAt(scene.position);
+				group.rotation.y -= 0.005;
+				renderer.render(scene, camera);
+			}
+		</script>
+	</div>
+	<div id="toWorld">
+		<div id="title">世 | 界 | 宏 | 观</div>
+		<div id="what">
+			<p>
+				<strong>火星探索者</strong>(MarsExplorer)是一款基于EOSIO及侧链开发的沙盒MMOSLG（大型多人在线策略类）游戏，
+			</p>
+			<p>以区块链技术保证规则公开透明、保障资产所有权、安全性及流通性，</p>
+			<p>结合Bancor协议分发数字资产，将游戏数据及资产上链。</p>
+			<p>打造一个将现实资源对接线上社会生产力，</p>
+			<p>以资产经营和个人发展为核心，</p>
+			<p>以自由主义经济为驱动，</p>
+			<p>集生存、社交、娱乐、金融、服务于一体的游戏Dapp!</p>
+
+		</div>
+		<div id="intro">
+			<div class="intro_left">
+				<div class="intro_info">
+					<div class="intro_img">
+						<img src="./img/wheel.png">
+					</div>
+					<div class="intro_title">
+						1.链上资产，不可篡改、永久保存
+					</div>
+				</div>
+				<div class="intro_text">
+					<p>基于EOSIO及侧链开发，智能合约永久运行，</p>
+					<p>游戏数据及资产上链，永久保存不可篡改，</p>
+					<p>保证玩家对资产完全的控制权。</p>
+				</div>
+			</div>
+			<div class="intro_right">
+				<div class="intro_info">
+					<div class="intro_img">
+						<img src="./img/wheel.png">
+					</div>
+					<div class="intro_title">
+						2.自由主义经济驱动
+					</div>
+				</div>
+				<div class="intro_text">
+					<p>无中心化组织控制，经济活动贯穿整个自由社会, </p>
+					<p>整个市场由一双“看不见的手”将资源配置</p>
+					<p>玩家可以任意经营自己的账号资产。</p>
+				</div>
+			</div>
+			<div class="intro_left intro_bottom">
+				<div class="intro_info">
+					<div class="intro_img">
+						<img src="./img/wheel.png">
+					</div>
+					<div class="intro_title">
+						3.规则公平和透明
+					</div>
+				</div>
+				<div class="intro_text">
+					<p>游戏运作规则和算法上公链，智能合约自动</p>
+					<p>执行，所有人均可监督开源代码。</p>
+				</div>
+			</div>
+			<div class="intro_right intro_bottom">
+				<div class="intro_info">
+					<div class="intro_img">
+						<img src="./img/wheel.png">
+					</div>
+					<div class="intro_title">
+						4.开发者社区
+					</div>
+				</div>
+				<div class="intro_text">
+					<p>﻿构建底层技术平台，接入第三方开发者，</p>
+					<p>所有人都能构建自己的经营体系。</p>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+	<div id="toSystem">
+		<button id="eco" onmouseover="show('eco')" onmouseleave="disappear('eco')"></button>
+		<button id="dec" onmouseover="show('dec')" onmouseleave="disappear('dec')"></button>
+		<button id="block" onmouseover="show('block')" onmouseleave="disappear('block')"></button>
+		<button id="links" onmouseover="show('links')" onmouseleave="disappear('links')"></button>
+		<img src="./img/system.png">
+	</div>
+	<div id="toAbout">
+		<div class="content_contact">
+			<div class="contact_content">
+				<div class="contact_info">
+					<div class="info_text">
+						<div class="info_QWC font_bold">
+							<p>QQ群：680798470</p>
+							<p>微信客服: 黑镜小哥哥</p>
+						</div>
+						<div class="info_email font_light">
+							<p>问题反馈邮箱：service@blackmirror.com</p>
+							<p>商务合作邮箱：business@blackmirror.com</p>
+						</div>
+					</div>
+					<div class="wccode">
+						<div class="wccode_title">
+							<div class="contact_wccode">
+								<img src="img/wechat.jpeg" alt="">
+							</div>
+							<div class="wccode_text font_light">
+								游戏入口
+							</div>
+
+						</div>
+						<div class="wccode_title">
+							<div class="contact_wccode">
+								<img src="img/wechat.jpeg" alt="">
+							</div>
+
+							<div class="wccode_text font_light">
+								火星探索客服微信号
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="nav_bg fixed">
+		<div class="nav">
+			<div class="nav_logo">
+				<img src="img/logo.png">
+			</div>
+			<div class="nav_text">
+				火星探索
+			</div>
+			<div class="nav_beat">
+				<img src="img/beat.png">
+			</div>
+			<div class="nav_tab">
+				<ul style="list-style: none;">
+					<li id="mars">
+						<span class="tab_text">火 星 探 索</span>
+					</li>
+					<li id="world">
+						<span class="tab_text">世 界 宏 观</span>
+					</li>
+					<li id="system">
+						<span class="tab_text">生 态 体 系</span>
+					</li>
+					<li id="about">
+						<span class="tab_text">关 于 我 们</span>
+					</li>
+					<li id="white">
+						<span class="tab_text">白 皮 书</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<script>
+		$("#mars").on("click", function () {
+			goDiv("container");
+		});
+
+		$("#world").on("click", function () {
+			goDiv("toWorld");
+		});
+
+		$("#system").on("click", function () {
+			goDiv("toSystem");
+		});
+
+		$("#about").on("click", function () {
+			goDiv("toAbout");
+		});
+
+		$("#white").on("click", function () {
+			window.open("docs/example.pdf");
+		});
+
+		function goDiv(div) {
+			var a = $("#" + div).offset().top;
+			$("html,body").animate({
+				scrollTop: a
+			}, 'slow');
+		}
+
+		var ecoMsg = "自然资源：火星里的所有自然资源，包括矿产、土地等都将以NFTs的形式基于bancor协议发行于链上、流通于智能银行。\n" +
+			"货币发行：游戏流通货币EX coin通过智能合约及bancor协议分发，流通部分根据自然资源的供需使用比解锁。\n" +
+			"自由贸易：除了建造基础设施的自然资源以外，玩家可以在自由市场做任何贸易。";
+
+		var decMsg = "控制权及隐私保护：所有玩家使用EOS主网账户登陆游戏，无须KYC，开发者无封禁用户账号的权力，玩家对账号拥有绝对控制权。\n" +
+			"分布式存储：核心交易数据上公链，其他游戏数据会使用用户的密钥加密，并将加密后的数据存储在去中心化的 DHT 分布储存网络如IPFS中。\n" +
+			"CDN节点：玩家贡献带宽作为劳动力获得相应算力用于开采自然资源。\n" +
+			"开发者联盟：当游戏达到稳定运行状态时，将开放底层技术平台，游戏基建不再由初始开发团队控制，所有玩家均可参与建设。";
+
+		var blockMsg = "由于现实PC、Phone等终端的性能局限性，与硬件开发商合作推出接入区块链主网、性能极佳的终端设备，届时，普通玩家也可保存区块链游戏数据、运行分布式全节点。";
+
+		var linksMsg = "模拟人生：玩家账号可以在虚拟世界里重新构建、经营一个新的人生，通过AI算法根据每个人的操作构建不同人格。\n" +
+			"场景革命：玩家可以在开放平台构建任何现实世界不容易建造的游戏场景/功能。";
+
+		function show(parameter) {
+			var elem = document.getElementById(parameter);
+			if (parameter == 'eco') {
+				if (elem.innerText == "") {
+					elem.innerText = ecoMsg;
+					elem.style.backgroundColor = 'rgba(0, 0, 0, 1)';
+				} else elem.innerText = "";
+			}
+
+			if (parameter == 'dec') {
+				if (elem.innerText == "") {
+					elem.innerText = decMsg;
+					elem.style.backgroundColor = 'rgba(0, 0, 0, 1)';
+				} else elem.innerText = "";
+			}
+
+			if (parameter == 'block') {
+				if (elem.innerText == "") {
+					elem.innerText = blockMsg;
+					elem.style.backgroundColor = 'rgba(0, 0, 0, 1)';
+				} else elem.innerText = "";
+			}
+
+			if (parameter == 'links') {
+				if (elem.innerText == "") {
+					elem.innerText = linksMsg;
+					elem.style.backgroundColor = 'rgba(0, 0, 0, 1)';
+				} else elem.innerText = "";
+			}
+		}
+
+		function disappear(parameter) {
+			var elem = document.getElementById(parameter);
+			elem.innerText = "";
+			elem.style.backgroundColor = 'rgba(255,255,255, 0)';
+		}
+	</script>
+</body>
+
+</html>
